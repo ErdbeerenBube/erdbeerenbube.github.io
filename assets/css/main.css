@@ -4687,3 +4687,7 @@ input, select, textarea {
 		}
 
 	}
+	.responsive-video {
+	  width: 100%;
+	  height: auto;
+	}
