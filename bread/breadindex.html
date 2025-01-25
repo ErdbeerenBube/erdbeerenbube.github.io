@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brotranking</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .flag {
+            width: 20px;
+            height: auto;
+            margin-left: 10px;
+        }
+        .menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 24px;
+            width: 30px;
+        }
+        .menu div {
+            height: 4px;
+            background-color: #333;
+        }
+        .nav {
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .nav a {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+        }
+        .nav a:hover {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="menu" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="nav" id="nav">
+            <a href="..\index.html">Home</a>
+        </div>
+        <h1>Brotranking</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rang</th>
+                    <th>Brot</th>
+                    <th>Beschreibung</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Sauerteigbrot <img src="images\de.png" alt="Deutschland" class="flag"></td>
+                    <td>Ein traditionelles Brot mit einem unverwechselbaren, leicht sauren Geschmack, der durch natürliche Fermentation entsteht.</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Vollkornbrot <img src="images\de.png" alt="Deutschland" class="flag"></td>
+                    <td>Ein gesundes Brot aus Vollkornmehl, reich an Ballaststoffen und Nährstoffen, ideal für eine ausgewogene Ernährung.</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Baguette <img src="images\fr.png" alt="Frankreich" class="flag"></td>
+                    <td>Ein klassisches französisches Weißbrot mit einer knusprigen Kruste und einer weichen, luftigen Krume.</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Roggenbrot <img src="images\de.png" alt="Deutschland" class="flag"></td>
+                    <td>Ein dunkles Brot aus Roggenmehl, bekannt für seinen kräftigen Geschmack und seine dichte, feuchte Textur.</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Ciabatta <img src="images\it.png" alt="Italien" class="flag"></td>
+                    <td>Ein italienisches Weißbrot mit einer luftigen Krume und einer knusprigen Kruste, perfekt für Sandwiches und Bruschetta.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function toggleMenu() {
+            var nav = document.getElementById('nav');
+            if (nav.style.display === 'flex') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+</html>

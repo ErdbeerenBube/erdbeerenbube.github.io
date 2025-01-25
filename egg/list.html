@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alle Ergebnisse</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+        .menu {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .menu input {
+            display: none;
+        }
+        .menu label {
+            display: block;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+        .menu label div {
+            width: 30px;
+            height: 4px;
+            background-color: #333;
+            margin: 6px 0;
+        }
+        .menu ul {
+            display: none;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        .menu input:checked ~ ul {
+            display: block;
+        }
+        .menu ul li {
+            padding: 10px 20px;
+        }
+        .menu ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+        .results {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .results ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .results li {
+            background-color: #f9f9f9;
+            margin-bottom: 5px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .timestamp {
+            color: #666;
+        }
+        .total-results {
+            background-color: #e0e0e0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .total-results div {
+            margin-bottom: 5px;
+        }
+        .filter {
+            margin-bottom: 20px;
+        }
+        .filter select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <input type="checkbox" id="menuToggle">
+        <label for="menuToggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </label>
+        <ul>
+            <li><a href="../index.html">Startseite</a></li>
+            <li><a href="index.html">Eierrechner</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <h1>Alle Ergebnisse</h1>
+        <div class="filter">
+            <label for="filterSelect">Gesamtergebnis anzeigen für:</label>
+            <select id="filterSelect">
+                <option value="all">Insgesamt</option>
+                <option value="today">Heute</option>
+                <option value="week">Ganze Woche</option>
+                <option value="month">Ganzen Monat</option>
+            </select>
+        </div>
+        <div class="total-results">
+            <h3>Gesamtergebnis:</h3>
+            <div><strong>Kalorien:</strong> <span id="totalCalories"></span></div>
+            <div><strong>Protein:</strong> <span id="totalProtein"></span></div>
+            <div><strong>Fett:</strong> <span id="totalFat"></span></div>
+            <div><strong>Kohlenhydrate:</strong> <span id="totalCarbs"></span></div>
+            <div><strong>Cholesterin:</strong> <span id="totalCholesterol"></span></div>
+        </div>
+        <div class="results">
+            <ul id="resultsList"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allEggs = JSON.parse(localStorage.getItem('allEggs')) || [];
+            const resultsList = document.getElementById('resultsList');
+            const filterSelect = document.getElementById('filterSelect');
+            let totalCalories = 0;
+            let totalProtein = 0;
+            let totalFat = 0;
+            let totalCarbs = 0;
+            let totalCholesterol = 0;
+
+            function updateResults(filter) {
+                resultsList.innerHTML = '';
+                totalCalories = 0;
+                totalProtein = 0;
+                totalFat = 0;
+                totalCarbs = 0;
+                totalCholesterol = 0;
+
+                const now = new Date();
+                const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
+                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+                allEggs.slice().reverse().forEach((entry, index) => { // Reverse the order of the entries
+                    const { eggs, timestamp } = entry;
+                    const date = new Date(timestamp);
+                    const formattedDate = date.toLocaleString('de-DE', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
+
+                    if (
+                        (filter === 'today' && date >= startOfDay) ||
+                        (filter === 'week' && date >= startOfWeek) ||
+                        (filter === 'month' && date >= startOfMonth) ||
+                        filter === 'all'
+                    ) {
+                        const calories = 70 * eggs;
+                        const protein = 6 * eggs;
+                        const fat = 5 * eggs;
+                        const carbs = 1 * eggs;
+                        const cholesterol = 186 * eggs;
+
+                        totalCalories += calories;
+                        totalProtein += protein;
+                        totalFat += fat;
+                        totalCarbs += carbs;
+                        totalCholesterol += cholesterol;
+
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `
+                            <strong>${eggs} Eier</strong> <span class="timestamp">(${formattedDate})</span><br>
+                            Kalorien: ${calories}<br>
+                            Protein: ${protein}g<br>
+                            Fett: ${fat}g<br>
+                            Kohlenhydrate: ${carbs}g<br>
+                            Cholesterin: ${cholesterol}mg
+                        `;
+                        resultsList.appendChild(listItem);
+                    }
+                });
+
+                document.getElementById('totalCalories').textContent = totalCalories;
+                document.getElementById('totalProtein').textContent = totalProtein + 'g';
+                document.getElementById('totalFat').textContent = totalFat + 'g';
+                document.getElementById('totalCarbs').textContent = totalCarbs + 'g';
+                document.getElementById('totalCholesterol').textContent = totalCholesterol + 'mg';
+            }
+
+            filterSelect.addEventListener('change', function() {
+                updateResults(this.value);
+            });
+
+            filterSelect.value = 'today'; // Set default filter to 'today'
+            updateResults('today'); // Set default filter to 'today'
+        });
+    </script>
+</body>
+</html>

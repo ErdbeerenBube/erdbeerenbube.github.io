@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eierrechner</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        input[type="number"] {
+            padding: 10px;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .menu {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .menu input {
+            display: none;
+        }
+        .menu label {
+            display: block;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+        .menu label div {
+            width: 30px;
+            height: 4px;
+            background-color: #333;
+            margin: 6px 0;
+        }
+        .menu ul {
+            display: none;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        .menu input:checked ~ ul {
+            display: block;
+        }
+        .menu ul li {
+            padding: 10px 20px;
+        }
+        .menu ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <input type="checkbox" id="menuToggle">
+        <label for="menuToggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </label>
+        <ul>
+            <li><a href="list.html">Alle Ergebnisse</a></li>
+            <li><a href="..\index.html">Startseite</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <h1>Wie viele Eier hast du gegessen?</h1>
+        <form id="eggForm" action="result.html" method="GET">
+            <label for="eggs">Anzahl der Eier:</label>
+            <input type="number" id="eggs" name="eggs" required>
+            <button type="submit">Absenden</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('eggForm').addEventListener('submit', function(event) {
+            const eggs = document.getElementById('eggs').value;
+            const timestamp = new Date().toISOString();
+            let allEggs = JSON.parse(localStorage.getItem('allEggs')) || [];
+            allEggs.push({ eggs, timestamp });
+            localStorage.setItem('allEggs', JSON.stringify(allEggs));
+        });
+    </script>
+</body>
+</html>
